@@ -21,6 +21,7 @@ public struct AttributionsWindow: Scene {
                 .attributionsHeader(header)
                 .frame(minWidth: 500, minHeight: 300)
         }
+        .commandsRemoved() // Don't show window in Windows menu
         .defaultPosition(.center)
         .defaultSize(width: 500, height: 300)
         .windowResizability(.contentMinSize)
