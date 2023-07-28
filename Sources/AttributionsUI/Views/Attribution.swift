@@ -11,18 +11,30 @@ public struct Attribution: View {
     /// The license the attributed entity is used under.
     public let license: OpenSourceLicense
     
+    private var text: String
+    
     @Environment(\.attributionsStyle) private var style
 
     /// Initialize attribution view with an entity as header and the license text as body.
     public init(_ entity: Entity, _ license: OpenSourceLicense) {
         self.entity = entity
         self.license = license
+        if license.description.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+            self.text = "\(license.text)"
+        } else {
+            self.text = "\(license.description)\n\n\(license.text)"
+        }
     }
 
     /// Initialize attribution view with the license text as body, but no header.
     public init(_ license: OpenSourceLicense) {
         self.entity = nil
         self.license = license
+        if license.description.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+            self.text = "\(license.text)"
+        } else {
+            self.text = "\(license.description)\n\n\(license.text)"
+        }
     }
     
     public var body: some View {
@@ -36,7 +48,7 @@ public struct Attribution: View {
                         .lineLimit(nil)
                         .padding(.vertical)
                 }
-                Text("\(license.description)\n\n\(license.text)")
+                Text(text)
                     .multilineTextAlignment(.leading)
                     .lineLimit(nil)
             }
@@ -44,7 +56,7 @@ public struct Attribution: View {
             .navigationTitle(style.structure == .inline ? "Attributions" : entity)
         } else {
             VStack(alignment: .leading) {
-                Text("\(license.description)\n\n\(license.text)")
+                Text(text)
                     .multilineTextAlignment(.leading)
                     .lineLimit(nil)
             }

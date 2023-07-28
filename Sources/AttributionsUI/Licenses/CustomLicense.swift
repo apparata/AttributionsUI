@@ -5,7 +5,7 @@ import SwiftUI
 extension OpenSourceLicense {
     
     /// Custom License
-    public static func custom(name: String = "Custom License", spdxID: String? = nil, text: String) -> OpenSourceLicense {
+    public static func custom(name: String? = nil, spdxID: String? = nil, text: String) -> OpenSourceLicense {
         return Self(name: name, spdxID: spdxID, text: text)
     }
 }

@@ -5,7 +5,7 @@ public struct OpenSourceLicense: Identifiable, CustomStringConvertible {
     public var id: String
     
     /// Full name of the license
-    public let name: String
+    public let name: String?
     
     /// Optional SPDX ID
     public let spdxID: String?
@@ -14,14 +14,18 @@ public struct OpenSourceLicense: Identifiable, CustomStringConvertible {
     public let text: String
     
     public var description: String {
-        if let spdxID {
+        if let name, let spdxID {
             return "\(name) (\(spdxID))"
+        } else if let name {
+            return "\(name)"
+        } else if let spdxID {
+            return "\(spdxID)"
         } else {
-            return name
+            return ""
         }
     }
     
-    public init(name: String, spdxID: String? = nil, text: String) {
+    public init(name: String?, spdxID: String? = nil, text: String) {
         self.name = name
         self.spdxID = spdxID
         self.id = spdxID ?? UUID().uuidString
