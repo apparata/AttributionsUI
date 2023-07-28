@@ -4,7 +4,9 @@ public struct AttributionsStyle {
     
     public enum Structure {
         case inline
+        #if os(iOS)
         case stack
+        #endif
     }
     
     public let structure: Structure
@@ -19,8 +21,10 @@ extension AttributionsStyle {
     /// One long scrolling view.
     public static let inline = AttributionsStyle(.inline)
     
+    #if os(iOS)
     /// To be used in a `NavigationStack`
     public static let stack = AttributionsStyle(.stack)
+    #endif
 }
 
 public struct AttributionsStyleKey: EnvironmentKey {
@@ -42,16 +46,16 @@ extension EnvironmentValues {
 
 public struct AttributionsStyleModifier: ViewModifier {
     
-    public let value: AttributionsStyle
+    public let style: AttributionsStyle
     
     public func body(content: Content) -> some View {
-        content.environment(\.attributionsStyle, value)
+        content.environment(\.attributionsStyle, style)
     }
 }
 
 extension View {
     
-    public func attributionsStyle(_ value: AttributionsStyle) -> some View {
-        self.modifier(AttributionsStyleModifier(value: value))
+    public func attributionsStyle(_ style: AttributionsStyle) -> some View {
+        self.modifier(AttributionsStyleModifier(style: style))
     }
 }

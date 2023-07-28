@@ -5,7 +5,7 @@ import PackageDescription
 let package = Package(
     name: "AttributionsUI",
     platforms: [
-        .iOS(.v16), .macOS(.v12), .tvOS(.v16)
+        .iOS(.v16), .macOS(.v13), .tvOS(.v16)
     ],
     products: [
         .library(name: "AttributionsUI", targets: ["AttributionsUI"])
