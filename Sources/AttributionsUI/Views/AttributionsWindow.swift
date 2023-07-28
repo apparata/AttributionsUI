@@ -5,10 +5,16 @@ import SwiftUI
 public struct AttributionsWindow: Scene {
 
     public static let windowID = "attributions"
+    
+    private let entries: [Attributions.Entry]
+    
+    public init(_ entries: [Attributions.Entry]) {
+        self.entries = entries
+    }
         
     public var body: some Scene {
         Window("Attributions", id: Self.windowID) {
-            Attributions()
+            Attributions(entries)
                 .frame(minWidth: 500, minHeight: 300)
         }
         .defaultPosition(.center)
