@@ -2,72 +2,63 @@ import SwiftUI
 
 public struct Attributions: View {
     
-    public typealias Entry = (Attribution.Entity, OpenSourceLicense)
+    public typealias Entity = String
     
-    private struct EntryType: Identifiable, Hashable {
+    public typealias Entry = (Entity, OpenSourceLicense)
         
-        let entity: Attribution.Entity
-        let license: OpenSourceLicense
+    private let sections: [AttributionSection]
         
-        var id: String {
-            return "\(entity)-\(license.id)"
-        }
-        
-        func hash(into hasher: inout Hasher) {
-            hasher.combine(id)
-        }
-        
-        static func == (lhs: Attributions.EntryType, rhs: Attributions.EntryType) -> Bool {
-            lhs.id == rhs.id
-        }
-    }
-    
-    private let entries: [EntryType]
-    
-    @Environment(\.attributionsStyle) private var style
-    
     @Environment(\.attributionsHeader) private var header
 
     public init(_ entries: Entry...) {
-        self.entries = entries.map { (entity, license) in
-            EntryType(entity: entity, license: license)
+        self.sections = entries.flatMap { (entity, license) in
+            let textSections: [String]
+            if license.description.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+                textSections = license.textSections
+            } else {
+                textSections = [license.description] + license.textSections
+            }
+            return [
+                AttributionSection(type: .entity, text: entity)
+            ] + textSections.map { text in
+                AttributionSection(type: .paragraph, text: text)
+            }
         }
     }
     
     public init(_ entries: [Entry]) {
-        self.entries = entries.map { (entity, license) in
-            EntryType(entity: entity, license: license)
+        self.sections = entries.flatMap { entry in
+            [
+                AttributionSection(type: .entity, text: entry.0)
+            ] + entry.1.textSections.map { text in
+                AttributionSection(type: .paragraph, text: text)
+            }
         }
     }
     
-    #if os(iOS)
     public var body: some View {
-        switch style.structure {
-        case .inline:
-            inlineView
-        case .stack:
-            stackView
-        }
-    }
-    #else
-    public var body: some View {
-        switch style.structure {
-        case .inline:
-            inlineView
-        }
-    }
-    #endif
-    
-    private var inlineView: some View {
         ScrollView(.vertical) {
-            LazyVStack {
+            LazyVStack(alignment: .leading) {
                 if let header {
                     Text(header)
                         .multilineTextAlignment(.leading)
                         .frame(maxWidth: .infinity, alignment: .leading)
                 }
-                ForEach(entries) { entry in
-                    Attribution(entry.entity, entry.license)
+                ForEach(sections) { section in
+                    switch section.type {
+                    case .entity:
+                        Text(section.text)
+                            .font(.headline)
+                            .fontWeight(.bold)
+                            .multilineTextAlignment(.leading)
+                            .lineLimit(nil)
+                            .padding(.vertical)
+                    case .paragraph:
+                        Text(.init(section.text))
+                            .multilineTextAlignment(.leading)
+                            .lineLimit(nil)
+                            .padding(.bottom, 12)
+                    }
                 }
             }
             .font(.footnote)
@@ -76,46 +67,11 @@ public struct Attributions: View {
         .navigationTitle("Attributions")
     }
     
-    private var stackView: some View {
-        List() {
-            Section {
-                ForEach(entries) { entry in
-                    NavigationLink {
-                        ScrollView(.vertical) {
-                            Attribution(entry.entity, entry.license)
-                                .environment(\.attributionsStyle, style)
-                                .padding()
-                        }
-                    } label: {
-                        Text(entry.entity)
-                    }
-                }
-            } header: {
-                if let header {
-                    Text(header)
-                }
-            }
-        }
-        .navigationTitle("Attributions")
-    }
 }
 
 #if swift(>=5.9)
 
 #if os(iOS)
-
-#Preview("Stack") {
-    NavigationStack {
-        Attributions(
-            ("StaplerKit", .mit(year: "2020", holder: "Initech")),
-            ("TNTCore", .bsd3Clause(year: "2021", holder: "Acme Inc")),
-            ("SoylentGreen", .zlib(year: "2006", holder: "Soylent")),
-            ("RoboKit", .apache2(year: "1987-2023", holder: "OCP")))
-        .attributionsStyle(.stack)
-        .attributionsHeader("The following software may be included in this product.")
-        .navigationBarTitleDisplayMode(.inline)
-    }
-}
 
 #Preview("Inline") {
     Attributions(
@@ -123,7 +79,6 @@ public struct Attributions: View {
         ("TNTCore", .bsd3Clause(year: "2021", holder: "Acme Inc")),
         ("SoylentGreen", .zlib(year: "2006", holder: "Soylent")),
         ("RoboKit", .apache2(year: "1987-2023", holder: "OCP")))
-        .attributionsStyle(.inline)
         .attributionsHeader("The following software may be included in this product.")
         .navigationBarTitleDisplayMode(.inline)
 }
