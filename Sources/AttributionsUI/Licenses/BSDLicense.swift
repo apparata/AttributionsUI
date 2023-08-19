@@ -62,9 +62,10 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS “AS IS” 
 #Preview {
     ScrollView(.vertical) {
         LazyVStack {
-            Attribution("TNTCore", .bsd3Clause(year: "2021", holder: "Acme Inc"))
-            Attribution("SoylentGreen", .bsd2Clause(year: "2006", holder: "Soylent"))
-            Attribution("BoulderBuilder", .bsd0Clause(year: "1999", holder: "Cyberdyne"))
+            Attributions(
+                ("TNTCore", .bsd3Clause(year: "2021", holder: "Acme Inc")),
+                ("SoylentGreen", .bsd2Clause(year: "2006", holder: "Soylent")),
+                ("BoulderBuilder", .bsd0Clause(year: "1999", holder: "Cyberdyne")))
         }
         .font(.footnote)
         .padding()

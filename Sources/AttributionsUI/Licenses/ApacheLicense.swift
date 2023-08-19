@@ -82,7 +82,8 @@ Unless required by applicable law or agreed to in writing, software distributed 
 #Preview {
     ScrollView(.vertical) {
         LazyVStack {
-            Attribution("RoboKit", .apache2(year: "1987-2023", holder: "OCP"))
+            Attributions(
+                ("RoboKit", .apache2(year: "1987-2023", holder: "OCP")))
         }
         .font(.footnote)
         .padding()

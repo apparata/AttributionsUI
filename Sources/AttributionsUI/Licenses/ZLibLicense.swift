@@ -28,7 +28,8 @@ Permission is granted to anyone to use this software for any purpose, including 
 #Preview {
     ScrollView(.vertical) {
         LazyVStack {
-            Attribution("SoylentGreen", .zlib(year: "2006", holder: "Soylent"))
+            Attributions(
+                ("SoylentGreen", .zlib(year: "2006", holder: "Soylent")))
         }
         .font(.footnote)
         .padding()

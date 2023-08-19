@@ -40,8 +40,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #Preview {
     ScrollView(.vertical) {
         LazyVStack {
-            Attribution("StaplerKit", .mit(year: "2020", holder: "Initech"))
-            Attribution("StaplerKit", .mitNoAttribution(year: "2020", holder: "Initech"))
+            Attributions(
+                ("StaplerKit", .mit(year: "2020", holder: "Initech")),
+                ("StaplerKit", .mitNoAttribution(year: "2020", holder: "Initech")))
         }
         .font(.footnote)
         .padding()

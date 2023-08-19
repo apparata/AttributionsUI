@@ -15,7 +15,8 @@ extension OpenSourceLicense {
 #Preview {
     ScrollView(.vertical) {
         LazyVStack {
-            Attribution("SoylentGreen", .custom(text: "This is a custom license."))
+            Attributions(
+                ("SoylentGreen", .custom(text: "This is a custom license.")))
         }
         .font(.footnote)
         .padding()
