@@ -15,8 +15,13 @@ public struct AttributionsWindow: Scene {
         self.entries = entries
     }
     
-    public init(_ header: String? = nil, _ entries: Attributions.Entry...) {
+    public init(_ header: String, _ entries: Attributions.Entry...) {
         self.header = header
+        self.entries = entries
+    }
+    
+    public init(_ entries: Attributions.Entry...) {
+        self.header = nil
         self.entries = entries
     }
         
