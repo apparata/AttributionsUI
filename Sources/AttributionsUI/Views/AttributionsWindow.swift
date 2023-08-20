@@ -11,8 +11,13 @@ public struct AttributionsWindow: Scene {
     private let header: String?
     
     public init(_ entries: [Attributions.Entry], header: String? = nil) {
-        self.entries = entries
         self.header = header
+        self.entries = entries
+    }
+    
+    public init(_ header: String? = nil, _ entries: Attributions.Entry...) {
+        self.header = header
+        self.entries = entries
     }
         
     public var body: some Scene {
